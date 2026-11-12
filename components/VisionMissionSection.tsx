@@ -1,116 +1,204 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
-import { Eye, Target } from 'lucide-react'
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { Eye, Target, Compass } from 'lucide-react'
+import Reveal from './Reveal'
 
+const vision =
+  'To become a leading institution for entrepreneurship, innovation, leadership development, and human-capacity building — raising individuals and leaders who transform ideas, businesses, communities, and society.'
+const words = vision.split(' ')
+const goldWords = new Set([3, 4]) // "leading institution"
+
+function Word({
+  children,
+  progress,
+  range,
+  gold,
+}: {
+  children: string
+  progress: MotionValue<number>
+  range: [number, number]
+  gold: boolean
+}) {
+  const opacity = useTransform(progress, range, [0.35, 1])
+  const y = useTransform(progress, range, [3, 0])
+  return (
+    <motion.span
+      style={{ opacity, y }}
+      className={`mr-[0.24em] inline-block drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ${
+        gold ? 'text-gradient font-black' : 'text-white'
+      }`}
+    >
+      {children}
+    </motion.span>
+  )
+}
+
+/** Your sticky Vision & Mission design, plus a big heading (same style as Philosophy) and reveal animations. */
 export default function VisionMissionSection() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['-10%', '10%'])
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Pin section for 260vh
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  })
+
+  // Word-by-word progress for Vision during first half
+  const textProgress = useTransform(scrollYProgress, [0.04, 0.46], [0, 1])
+
+  // Mission spotlight progress during second half
+  const missionProgress = useTransform(scrollYProgress, [0.46, 0.85], [0, 1])
+  const missionOpacity = useTransform(missionProgress, [0, 1], [0.65, 1])
+  const missionY = useTransform(missionProgress, [0, 1], [15, 0])
+  const missionBorder = useTransform(
+    missionProgress,
+    [0, 1],
+    ['rgba(255,255,255,0.2)', 'rgba(212,175,55,0.65)']
+  )
+  const missionBg = useTransform(
+    missionProgress,
+    [0, 1],
+    ['rgba(15,15,15,0.55)', 'rgba(212,175,55,0.07)']
+  )
+
+  // Vision softens slightly when Mission takes the primary spotlight
+  const visionDim = useTransform(scrollYProgress, [0.48, 0.68], [1, 0.60])
+
+  // Kinetic marquee lines sliding across
+  const x1 = useTransform(scrollYProgress, [0, 1], ['6%', '-22%'])
+  const x2 = useTransform(scrollYProgress, [0, 1], ['-26%', '6%'])
+
+  // Container fade at top/bottom
+  const containerOpacity = useTransform(scrollYProgress, [0, 0.05, 0.94, 1], [0.85, 1, 1, 0.85])
+
+  const n = words.length
 
   return (
-    <section id="vision" ref={ref} className="relative py-32 overflow-hidden">
-      {/* Parallax background */}
-      <motion.div
-        style={{ y: bgY }}
-        className="absolute inset-0 opacity-10"
-      >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-[25vw] font-black text-[#D4AF37] leading-none select-none">
-            DEILA
-          </div>
-        </div>
-      </motion.div>
-
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black" />
-
-      <div className="relative max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#D4AF37]/20 text-[#D4AF37]/70 text-xs tracking-widest uppercase mb-6"
-          >
-            Our Direction
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl lg:text-7xl font-black tracking-tighter"
-          >
-            Vision & <span className="text-gradient">Mission</span>
-          </motion.h2>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Vision */}
-          <motion.div
-            initial={{ opacity: 0, x: -60 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative p-10 rounded-3xl border border-[#D4AF37]/20 group overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.05), transparent)' }}
-            whileHover={{ borderColor: 'rgba(212,175,55,0.5)' }}
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'rgba(212,175,55,0.05)' }} />
-
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8" style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
-              <Eye size={26} className="text-[#D4AF37]" />
-            </div>
-
-            <div className="text-[#D4AF37]/60 text-xs tracking-widest uppercase font-semibold mb-4">Our Vision</div>
-            <p className="text-2xl font-bold text-white leading-relaxed">
-              To become a{' '}
-              <span className="text-gradient">leading institution</span>
-              {' '}for entrepreneurship, innovation, leadership development, and human-capacity building —
-              raising individuals and leaders who transform ideas, businesses, communities, and society.
-            </p>
-          </motion.div>
-
-          {/* Mission */}
-          <motion.div
-            initial={{ opacity: 0, x: 60 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.3 }}
-            className="relative p-10 rounded-3xl border border-white/5 group overflow-hidden"
-            style={{ background: 'rgba(255,255,255,0.02)' }}
-            whileHover={{ borderColor: 'rgba(212,175,55,0.3)' }}
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'rgba(212,175,55,0.03)' }} />
-
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <Target size={26} className="text-white/60" />
-            </div>
-
-            <div className="text-white/40 text-xs tracking-widest uppercase font-semibold mb-4">Our Mission</div>
-            <p className="text-xl text-white/70 leading-relaxed">
-              To provide accessible learning platforms, practical training, mentorship,
-              networking opportunities, and developmental initiatives that equip individuals
-              with the knowledge, skills, values, and capacity to achieve personal excellence,
-              entrepreneurial success, effective leadership, and meaningful societal impact.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Bottom quote */}
+    <section
+      id="vision"
+      ref={sectionRef}
+      className="relative overflow-x-clip scroll-mt-28"
+      style={{ height: '260vh' }}
+    >
+      {/* Sticky pinned container: pt-28 gives full clearance so navbar never covers content */}
+      <div className="sticky top-0 flex flex-col justify-center overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-10">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-16 text-center"
+          style={{ opacity: containerOpacity }}
+          className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
         >
-          <p className="text-2xl lg:text-4xl font-black text-white/20 tracking-tighter">
-            One Vision. Many Gifts. Multiple Functions.
-          </p>
-          <p className="text-2xl lg:text-4xl font-black text-gradient tracking-tighter">
-            One Movement. Limitless Impact.
-          </p>
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+            {/* NEW: big heading, same style as Philosophy. Sits on the left on desktop, above the cards on small screens. */}
+            <div className="lg:col-span-5">
+              <Reveal from="down" distance={30}>
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#D4AF37] backdrop-blur-md">
+                  <Compass size={13} />
+                  Guiding Principles
+                </div>
+              </Reveal>
+              <h2 className="text-5xl font-black leading-[0.9] tracking-tighter lg:text-7xl">
+                <Reveal from="right" delay={0.1} distance={80}>
+                  Our
+                </Reveal>
+                <Reveal from="left" delay={0.22} distance={80}>
+                  <span className="text-gradient">Vision &amp; Mission</span>
+                </Reveal>
+              </h2>
+              <Reveal from="up" delay={0.4}>
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-white/60">
+                  The destination we are working toward, and the practical commitments that carry us there.
+                </p>
+              </Reveal>
+            </div>
+
+            {/* Your cards (unchanged design) */}
+            <div className="lg:col-span-7">
+              {/* Header tracker */}
+              <Reveal from="right" distance={40} amount={0.5}>
+                <div className="mb-4 flex items-center justify-end">
+                  <div className="text-xs uppercase tracking-widest text-white/60">
+                    <span className="text-[#D4AF37]">Sticky View</span> · Scroll to Advance
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Vision Frosted Luminous Card */}
+              <Reveal from="left" delay={0.1} distance={80}>
+                <motion.div
+                  style={{ opacity: visionDim }}
+                  className="rounded-3xl border border-white/20 bg-gradient-to-br from-white/[0.09] via-[#0d0d0d]/70 to-black/75 p-6 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.25)] transition-opacity duration-500 sm:p-8"
+                >
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+                    <Eye size={15} />
+                    01 / Our Vision
+                  </div>
+                  <p className="text-2xl font-black leading-[1.2] tracking-tighter text-white sm:text-3xl lg:text-4xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+                    {words.map((w, i) => (
+                      <Word
+                        key={i}
+                        progress={textProgress}
+                        range={[i / (n + 1), (i + 2) / (n + 1)]}
+                        gold={goldWords.has(i)}
+                      >
+                        {w}
+                      </Word>
+                    ))}
+                  </p>
+                </motion.div>
+              </Reveal>
+
+              {/* Mission Luminous Card with High Contrast Text */}
+              <Reveal from="right" delay={0.25} distance={80}>
+                <motion.div
+                  style={{
+                    opacity: missionOpacity,
+                    y: missionY,
+                    borderColor: missionBorder,
+                    backgroundColor: missionBg,
+                  }}
+                  className="mt-5 rounded-3xl border p-6 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.55),inset_0_1px_2px_rgba(255,255,255,0.25)] transition-all duration-300 sm:p-8"
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#F0D060]">
+                      <Target size={15} />
+                      02 / Our Mission
+                    </div>
+                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-white/15">
+                      <motion.div
+                        style={{ scaleX: missionProgress }}
+                        className="h-full origin-left bg-gradient-to-r from-[#D4AF37] to-[#F0D060]"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-base font-medium leading-relaxed text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] sm:text-lg md:text-xl">
+                    To provide accessible learning platforms, practical training, mentorship, networking
+                    opportunities, and developmental initiatives that equip individuals with the{' '}
+                    <span className="text-[#F0D060] font-semibold">knowledge, skills, values, and capacity</span> to achieve{' '}
+                    <span className="text-[#F0D060] font-semibold">personal excellence</span>, entrepreneurial success,
+                    effective leadership, and meaningful societal impact.
+                  </p>
+                </motion.div>
+              </Reveal>
+            </div>
+          </div>
         </motion.div>
+
+        {/* Sliding Kinetic Typography along the bottom */}
+        <div className="mt-auto select-none overflow-hidden pb-1" aria-hidden>
+          <motion.p
+            style={{ x: x1 }}
+            className="whitespace-nowrap text-[9vw] font-black leading-none tracking-tighter text-white/10"
+          >
+            One Vision. Many Gifts. Multiple Functions. One Vision. Many Gifts.
+          </motion.p>
+          <motion.p
+            style={{ x: x2 }}
+            className="text-gradient whitespace-nowrap text-[9vw] font-black leading-none tracking-tighter opacity-80"
+          >
+            One Movement. Limitless Impact. One Movement. Limitless Impact.
+          </motion.p>
+        </div>
       </div>
     </section>
   )

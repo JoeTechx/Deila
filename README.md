@@ -6,6 +6,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
 
 **Developing People. Building Leaders. Inspiring Innovation. Creating Impact.**
 
@@ -17,7 +18,7 @@
 
 ## 🌟 Overview
 
-The official website for **DEILA** (DASAYO Entrepreneurship Innovation Leadership Academy) — a premium dark-themed, single-page landing site built with cutting-edge web technologies. Features immersive 3D Three.js animations, smooth Framer Motion transitions, and a bold typographic design system inspired by high-end agency websites.
+The official website for **DEILA** (DASAYO Entrepreneurship Innovation Leadership Academy) — a high-performance, dark-themed, single-page landing site built with cutting-edge web technologies. Features an interactive 3D Three.js experience, dynamic camera poses tied to scroll depth, Framer Motion choreography, and a bold typographic design system inspired by top-tier modern agency platforms.
 
 ---
 
@@ -25,29 +26,31 @@ The official website for **DEILA** (DASAYO Entrepreneurship Innovation Leadershi
 
 | Technology | Version | Purpose |
 |---|---|---|
-| **Next.js** | 16 (App Router) | Framework |
-| **TypeScript** | ^5 | Type safety |
-| **Tailwind CSS** | v4 | Styling |
-| **Framer Motion** | latest | Animations |
-| **Three.js** | latest | 3D graphics |
-| **Lucide React** | latest | Icons |
+| **Next.js** | 16 (App Router + Turbopack) | React Framework & SSR/SSG |
+| **TypeScript** | ^5 | Strict type safety |
+| **Tailwind CSS** | v4 | Modern utility-first styling |
+| **Framer Motion** | latest | Fluid scroll & entrance choreographies |
+| **Three.js** | r160+ | Interactive 3D logo & background scene |
+| **Lucide React** | latest | Clean SVG iconography |
 
 ---
 
-## 📄 Pages & Sections
+## 💫 Interactive & 3D Features (v2 Update)
 
-The site is a fully animated single-page experience with 10 sections:
+The website features an integrated 3D logo centerpiece and continuous scroll choreography:
 
-1. **Navbar** — Fixed, transparent → blur-on-scroll, responsive mobile menu
-2. **Hero Section** — Full-viewport Three.js particle field + orbiting tori, mouse-parallax camera, word-by-word reveal animation
-3. **Stats Bar** — Animated count-up numbers: 7 Focus Areas, 12+ Webinars, 1 Movement, 100% Commitment
-4. **About Section** — Two-column layout with floating 3D wireframe octahedron
-5. **What We Do** — 7 focus area cards with hover glow effects and border animations
-6. **Vision & Mission** — Parallax DEILA watermark background, side-by-side cards
-7. **Philosophy** — 6 pillars on a subtle grid background with animated reveal
-8. **Approach** — Scrolling parallax marquee text + 7 commitment checklist
-9. **Join Us** — Animated concentric rings CTA with email capture form
-10. **Footer** — 4-column layout with navigation, social links, and copyright
+- **Preloader:** Synchronized initial reveal that signals the 3D scene to fly in once ready.
+- **SceneBackground (Three.js):** 3D extruded DEILA emblem rendered with realistic gold materials, metallic reflections (PMREM Environment), dual lighting, floating particle halos, and section-specific camera poses (`POSES` mapped to `data-scene` elements).
+- **Navbar:** Drops in post-preloader, auto-hides on downward scroll, reveals on upward scroll, includes an interactive sliding gold indicator tracking the active section, and displays a top scroll-progress bar.
+- **Hero Section:** Masked word-by-word staggered reveal animation with 3D logo positioning.
+- **Stats Bar:** Tilted gold marquee ribbon with animated count-up metrics.
+- **About Section:** Dynamic slide-in headlines paired with 3D-tilt glassmorphism cards.
+- **What We Do (Horizontal Scroll):** Pinned section where vertical page scroll drives horizontal card track exploration with 3D entrance rotations.
+- **Vision & Mission:** Progressive word illumination matching scroll progress, with closing text streams sliding in opposing directions.
+- **Philosophy:** Sticky stacked deck card presentation with subtle depth-layering.
+- **Approach:** Interactive timeline where a drawing gold beam illuminates each core commitment.
+- **Join Us:** Interactive cursor spotlight, 3D character flips, magnetic CTA button, and celebratory gold burst upon submission.
+- **Footer (Curtain Reveal):** Pin-reveal transition where the footer rises over the scene, featuring cascading links, an illuminated giant wordmark, and smooth back-to-top navigation.
 
 ---
 
@@ -56,9 +59,9 @@ The site is a fully animated single-page experience with 10 sections:
 ### Colour Palette
 | Token | Hex | Usage |
 |---|---|---|
-| `Gold` | `#D4AF37` | Primary accent, CTAs, highlights |
-| `Gold Light` | `#F0D060` | Hover states |
-| `Black` | `#000000` | Primary background |
+| `Gold` | `#D4AF37` | Primary accent, CTAs, metallic highlights |
+| `Gold Light` | `#F0D060` | Hover states, glowing gradients |
+| `Black` | `#000000` | Primary dark background |
 | `Dark 100` | `#0a0a0a` | Section backgrounds |
 | `Dark 200` | `#111111` | Card backgrounds |
 | `White` | `#ffffff` | Primary text |
@@ -75,23 +78,30 @@ The site is a fully animated single-page experience with 10 sections:
 ```
 Deila/
 ├── app/
-│   ├── globals.css        # Tailwind v4 @theme config + global styles
+│   ├── favicon.ico        # Academy brand favicon
+│   ├── globals.css        # Tailwind v4 configuration & base styles
 │   ├── layout.tsx         # Root layout, Inter font, SEO metadata
-│   └── page.tsx           # Main page — composes all sections
+│   └── page.tsx           # Main page orchestrating 3D scene & sections
 ├── components/
-│   ├── Navbar.tsx          # Fixed nav with scroll blur + mobile menu
-│   ├── HeroSection.tsx     # Three.js canvas + animated headline
-│   ├── StatsBar.tsx        # Animated count-up statistics
-│   ├── AboutSection.tsx    # Two-col layout + 3D floating geometry
-│   ├── WhatWeDoSection.tsx # 7 focus area cards grid
-│   ├── VisionMissionSection.tsx  # Parallax vision & mission cards
-│   ├── PhilosophySection.tsx     # 6 philosophy pillars
-│   ├── ApproachSection.tsx       # Approach + commitments list
-│   ├── JoinSection.tsx           # Email CTA with animated rings
-│   └── Footer.tsx                # Footer with links & socials
-├── public/                # Static assets
-├── next.config.ts         # Next.js configuration
-├── tsconfig.json          # TypeScript configuration
+│   ├── AboutSection.tsx         # About narrative with 3D-tilt card
+│   ├── ApproachSection.tsx      # Interactive progress timeline
+│   ├── Footer.tsx               # Curtain-reveal footer & back-to-top
+│   ├── HeroSection.tsx          # Hero header & word reveal
+│   ├── JoinSection.tsx          # Spotlight CTA & interactive form
+│   ├── Navbar.tsx               # Dynamic floating navbar with active pills
+│   ├── PhilosophySection.tsx    # Stacked deck card layout
+│   ├── Preloader.tsx            # Initial load choreography & scene trigger
+│   ├── Reveal.tsx               # Reusable directional motion wrapper
+│   ├── SceneBackground.tsx      # Three.js 3D emblem scene & pose controller
+│   ├── StatsBar.tsx             # Marquee ribbon & animated counters
+│   ├── TiltCard.tsx             # Interactive 3D tilt hover effect
+│   ├── VisionMissionSection.tsx # Word-by-word scroll highlighting
+│   └── WhatWeDoSection.tsx      # Pinned horizontal focus area cards
+├── lib/
+│   └── logoPaths.ts             # SVG path geometry definitions for 3D extrusion
+├── public/                      # Static assets & brand graphics
+├── next.config.ts               # Next.js configuration
+├── tsconfig.json                # TypeScript configuration
 └── package.json
 ```
 
