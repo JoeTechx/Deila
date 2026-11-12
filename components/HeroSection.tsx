@@ -60,20 +60,25 @@ export default function HeroSection() {
       {/* The 3D DEILA logo lives in the fixed scene behind this section */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black via-black/70 to-transparent" />
 
-      <div className="pointer-events-none absolute inset-x-0 top-28 flex justify-center px-4">
-        <motion.div
-          {...a('down', 0)}
-          className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#D4AF37] px-4 py-2 text-[10px] font-medium uppercase tracking-widest text-[#f0d060] sm:text-xs"
-          style={{ background: 'rgba(212,175,55,0.05)' }}
-        >
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#D4AF37]" />
-          DASAYO Entrepreneurship Innovation Leadership Academy
-        </motion.div>
+      {/* Badge sits in the same container as the content so it lines up on the left */}
+      <div className="pointer-events-none absolute inset-x-0 top-28">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div
+            {...a('down', 0)}
+            className="inline-flex items-center gap-2 rounded-2xl border border-[#D4AF37] px-4 py-2 text-[10px] font-medium uppercase tracking-widest text-[#f0d060] sm:whitespace-nowrap sm:rounded-full sm:text-xs"
+            style={{ background: 'rgba(212,175,55,0.05)' }}
+          >
+            <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[#D4AF37]" />
+            DASAYO Entrepreneurship Innovation Leadership Academy
+          </motion.div>
+        </div>
       </div>
 
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-end gap-8 border-t border-white/10 pt-8 lg:grid-cols-12 lg:gap-12">
-          <h1 className="text-4xl font-black leading-[0.95] tracking-tighter sm:text-6xl xl:text-7xl lg:col-span-7">
+        {/* Left column holds all the text. The right half is left empty for the 3D logo. */}
+        <div className="grid border-t border-white/10 pt-8 lg:grid-cols-12">
+          <div className="text-left lg:col-span-6">
+          <h1 className="mb-6 text-4xl font-black leading-[0.95] tracking-tighter sm:text-6xl xl:text-7xl">
             {lines.map((line, li) => (
               <span key={li} className="block">
                 {line.map((word, wi) => (
@@ -87,7 +92,7 @@ export default function HeroSection() {
             ))}
           </h1>
 
-          <div className="lg:col-span-5">
+          <div>
             <motion.p {...a('left', 5)} className="mb-7 max-w-xl text-md leading-relaxed text-white/90 sm:text-md">
               Inspiring Innovation. Creating Impact. We bridge the gap between knowledge and practical application —
               turning potential into lasting societal impact.
@@ -114,6 +119,7 @@ export default function HeroSection() {
                 </motion.a>
               </motion.div>
             </div>
+          </div>
           </div>
         </div>
 
