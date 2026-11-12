@@ -21,7 +21,7 @@ type Pose = { x: number; y: number; s: number; z: number; rx: number; ry: number
 
 const TAU = Math.PI * 2
 const POSES: Record<string, Pose> = {
-  hero:       { x: 0,     y: 0.3,   s: 0.62, z: 0,  rx: 0.05,  ry: 0,             rz: 0,     o: 0.70,    h: 1 },
+  hero:       { x: 0.48,  y: 0.05,  s: 0.42, z: 0,  rx: 0.05,  ry: 0,             rz: 0,     o: 0.70,    h: 1 },
   stats:      { x: 0,     y: 0.6,   s: 0.3,  z: -2, rx: 0.2,   ry: 0.6,           rz: 0,     o: 1,  h: 0 },
   about:      { x: 0.5,   y: 0.12,  s: 0.42, z: 0,  rx: 0.12,  ry: TAU - 0.5,     rz: 0.04,  o: 1,    h: 0 },
   whatwedo:   { x: 0,     y: 0.25,  s: 1.1,  z: -6, rx: 0.4,   ry: TAU * 1.5,     rz: 0,     o: 0.32, h: 0 },
@@ -227,7 +227,9 @@ export default function SceneBackground() {
       const vw = vh * aspect
       const s = mobile ? Math.min(cur.s * 1.6, 0.92) : cur.s
 
-      pivot.position.set(cur.x * (mobile ? 0.3 : 1) * (vw / 2), cur.y * (vh / 2), cur.z)
+      // On phones the text fills the lower part of the hero, so lift the logo above it (fades out with cur.h)
+      const mobileLift = mobile ? cur.h * 0.4 : 0
+      pivot.position.set(cur.x * (mobile ? 0.3 : 1) * (vw / 2), (cur.y + mobileLift) * (vh / 2), cur.z)
       pivot.scale.setScalar(s * vw * (0.55 + 0.45 * e))
       pivot.rotation.set(
         cur.rx + velTilt + smy * 0.12,
