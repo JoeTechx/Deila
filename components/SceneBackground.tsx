@@ -21,14 +21,14 @@ type Pose = { x: number; y: number; s: number; z: number; rx: number; ry: number
 
 const TAU = Math.PI * 2
 const POSES: Record<string, Pose> = {
-  hero:       { x: 0,     y: 0.3,   s: 0.62, z: 0,  rx: 0.05,  ry: 0,             rz: 0,     o: 1,    h: 1 },
-  stats:      { x: 0,     y: 0.6,   s: 0.3,  z: -2, rx: 0.2,   ry: 0.6,           rz: 0,     o: 0.9,  h: 0 },
+  hero:       { x: 0,     y: 0.3,   s: 0.62, z: 0,  rx: 0.05,  ry: 0,             rz: 0,     o: 0.70,    h: 1 },
+  stats:      { x: 0,     y: 0.6,   s: 0.3,  z: -2, rx: 0.2,   ry: 0.6,           rz: 0,     o: 1,  h: 0 },
   about:      { x: 0.5,   y: 0.12,  s: 0.42, z: 0,  rx: 0.12,  ry: TAU - 0.5,     rz: 0.04,  o: 1,    h: 0 },
-  whatwedo:   { x: 0,     y: 0.25,  s: 1.1,  z: -6, rx: 0.4,   ry: TAU * 1.5,     rz: 0,     o: 0.16, h: 0 },
-  vision:     { x: -0.6,  y: -0.3,   s: 0.36, z: 0,  rx: -0.1,  ry: TAU * 2 + 0.5, rz: -0.04, o: 1,    h: 0 },
-  philosophy: { x: 0.55,  y: -0.1,  s: 0.36, z: -1, rx: 0.2,   ry: TAU * 3 - 0.45, rz: 0.03, o: 0.95, h: 0 },
-  approach:   { x: 0,     y: 0,     s: 0.95, z: -4, rx: -0.15, ry: TAU * 3 + 0.5, rz: 0,     o: 0.14, h: 0 },
-  join:       { x: 0,     y: 0,     s: 0.8,  z: -3, rx: 0.05,  ry: TAU * 4,       rz: 0,     o: 0.3,  h: 0 },
+  whatwedo:   { x: 0,     y: 0.25,  s: 1.1,  z: -6, rx: 0.4,   ry: TAU * 1.5,     rz: 0,     o: 0.32, h: 0 },
+  vision:     { x: -0.6,  y: -0.3,   s: 0.36, z: 0,  rx: -0.1,  ry: TAU * 2 + 0.5, rz: -0.04, o: 0.32,    h: 0 },
+  philosophy: { x: 0.55,  y: -0.1,  s: 0.36, z: -1, rx: 0.2,   ry: TAU * 3 - 0.45, rz: 0.03, o: 0.32, h: 0 },
+  approach:   { x: 0,     y: 0,     s: 0.95, z: -4, rx: -0.15, ry: TAU * 3 + 0.5, rz: 0,     o: 0.32, h: 0 },
+  join:       { x: 0,     y: 0,     s: 0.8,  z: -3, rx: 0.05,  ry: TAU * 4,       rz: 0,     o: 0.38,  h: 0 },
 }
 const KEYS = Object.keys(POSES.hero) as (keyof Pose)[]
 
@@ -76,7 +76,7 @@ function buildLogo(env: THREE.Texture) {
       metalness: 1,
       roughness,
       envMap: env,
-      envMapIntensity: 1.3,
+      envMapIntensity: 1.9,
       emissive,
       transparent: true,
     })
@@ -84,8 +84,8 @@ function buildLogo(env: THREE.Texture) {
   }
 
   const inner = new THREE.Group()
-  const de = make(DE_PATH, 0xf2f2f2, 0.3, 0x000000)
-  const ila = make(ILA_PATH, 0xd4af37, 0.22, 0x2a1d00) // gold from globals.css
+  const de = make(DE_PATH, 0xf2f2f2, 0.3, 0x2a2a2a) // slight self-glow so it never goes fully dark
+  const ila = make(ILA_PATH, 0xd4af37, 0.22, 0x5a4300) // gold from globals.css, with self-glow
   inner.add(de, ila)
 
   // Center it, normalise width to 1 unit, and flip Y (SVG coordinates point down)
@@ -115,7 +115,7 @@ export default function SceneBackground() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75))
     renderer.setSize(window.innerWidth, window.innerHeight, false)
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.1
+    renderer.toneMappingExposure = 1.45
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 200)
@@ -125,11 +125,13 @@ export default function SceneBackground() {
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
 
     // Lights
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2)
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3)
     keyLight.position.set(3, 4, 6)
-    const gold = new THREE.PointLight(0xd4af37, 60, 40)
+    const gold = new THREE.PointLight(0xd4af37, 120, 40)
     gold.position.set(-4, -2, 6)
-    scene.add(keyLight, gold)
+    const fill = new THREE.DirectionalLight(0xfff1cc, 1.6) // soft front light
+    fill.position.set(-2, 0, 8)
+    scene.add(keyLight, gold, fill)
 
     // Logo + halo rings
     const pivot = new THREE.Group()
