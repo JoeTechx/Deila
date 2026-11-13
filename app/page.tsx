@@ -10,6 +10,7 @@ import PhilosophySection from '@/components/PhilosophySection'
 import ApproachSection from '@/components/ApproachSection'
 import JoinSection from '@/components/JoinSection'
 import Footer from '@/components/Footer'
+import WebinarsSection from '@/components/webinarsSection'
 
 // Each data-scene wrapper tells the 3D logo which pose to use while that section is on screen.
 // Poses are defined in components/SceneBackground.tsx.
@@ -27,6 +28,7 @@ export default function Home() {
         <div data-scene="vision"><VisionMissionSection /></div>
         <div data-scene="philosophy"><PhilosophySection /></div>
         <div data-scene="approach"><ApproachSection /></div>
+        <div data-scene="webinars"><WebinarsSection /></div>
         {/* Curtain reveal: Join stays pinned while the footer slides up and covers it (and the 3D logo behind) */}
           <div data-scene="join" className="sticky top-0 z-0"><JoinSection /></div>
         <div id="finale" className="relative">

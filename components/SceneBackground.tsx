@@ -28,6 +28,7 @@ const POSES: Record<string, Pose> = {
   vision:     { x: -0.6,  y: -0.3,   s: 0.36, z: 0,  rx: -0.1,  ry: TAU * 2 + 0.5, rz: -0.04, o: 0.32,    h: 0 },
   philosophy: { x: 0.55,  y: -0.1,  s: 0.36, z: -1, rx: 0.2,   ry: TAU * 3 - 0.45, rz: 0.03, o: 0.32, h: 0 },
   approach:   { x: 0,     y: 0,     s: 0.95, z: -4, rx: -0.15, ry: TAU * 3 + 0.5, rz: 0,     o: 0.32, h: 0 },
+  webinars:   { x: 0, y: 0, s: 1, z: -6, rx: 0.2, ry: TAU * 3.9, rz: 0, o: 0.22, h: 0 },
   join:       { x: 0,     y: 0,     s: 0.8,  z: -3, rx: 0.05,  ry: TAU * 4,       rz: 0,     o: 0.38,  h: 0 },
 }
 const KEYS = Object.keys(POSES.hero) as (keyof Pose)[]

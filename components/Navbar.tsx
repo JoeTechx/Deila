@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'What We Do', href: '#whatwedo' },
   { label: 'Vision & Mission', href: '#vision' },
+  { label: 'Webinars', href: '#webinars' },
   { label: 'Philosophy', href: '#philosophy' },
   { label: 'Join Us', href: '#join' },
 ]
