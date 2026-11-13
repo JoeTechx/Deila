@@ -326,3 +326,14 @@ body {
     margin-bottom: 2.5rem;
   }
 }
+/* Hero: bring the badge down next to the big heading (screens 486px to 670px wide) */
+@media (min-width: 459px) and (max-width: 670px) {
+  #home > div.absolute.inset-x-0.top-28 {
+    position: static;
+    margin-bottom: 0.875rem;
+  }
+
+  #home > .relative.z-10 > .grid {
+    padding-top: 1.25rem;
+  }
+}
