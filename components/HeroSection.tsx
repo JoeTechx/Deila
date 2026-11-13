@@ -78,7 +78,7 @@ export default function HeroSection() {
         {/* Left column holds all the text. The right half is left empty for the 3D logo. */}
         <div className="grid border-t border-white/10 pt-8 lg:grid-cols-12">
           <div className="text-left lg:col-span-6">
-          <h1 className="mb-6 text-4xl font-black leading-[0.95] tracking-tighter sm:text-6xl xl:text-7xl">
+          <h1 className="mb-6 text-4xl font-black leading-[0.95] tracking-tighter sm:text-6xl xl:text-[3.7rem]">
             {lines.map((line, li) => (
               <span key={li} className="block">
                 {line.map((word, wi) => (
