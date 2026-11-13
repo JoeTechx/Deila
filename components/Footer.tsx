@@ -63,7 +63,7 @@ export default function Footer() {
   return (
     <footer
       ref={ref}
-      className="relative z-10 flex min-h-[100svh] flex-col overflow-hidden rounded-t-[2rem] border-t border-[#D4AF37]/25 shadow-[0_-40px_120px_rgba(0,0,0,0.95)] md:rounded-t-[3rem]"
+      className="relative z-10 flex min-h-[100svh] flex-col overflow-hidden border-t border-[#D4AF37]/25 shadow-[0_-40px_120px_rgba(0,0,0,0.95)]"
       style={{ background: '#0a0a0a' }}
     >
       {/* Gold edge light along the top of the curtain */}
