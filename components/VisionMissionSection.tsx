@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { Eye, Target, Compass } from 'lucide-react'
 import Reveal from './Reveal'
 
@@ -66,9 +66,8 @@ export default function VisionMissionSection() {
   // Vision softens slightly when Mission takes the primary spotlight
   const visionDim = useTransform(scrollYProgress, [0.48, 0.68], [1, 0.60])
 
-  // Kinetic marquee lines sliding across
-  const x1 = useTransform(scrollYProgress, [0, 1], ['6%', '-22%'])
-  const x2 = useTransform(scrollYProgress, [0, 1], ['-26%', '6%'])
+  // Kinetic marquee lines now slide on their own (see the bottom of the JSX), not with scroll
+  const reduceMotion = useReducedMotion()
 
   // Container fade at top/bottom
   const containerOpacity = useTransform(scrollYProgress, [0, 0.05, 0.94, 1], [0.85, 1, 1, 0.85])
@@ -186,18 +185,40 @@ export default function VisionMissionSection() {
 
         {/* Sliding Kinetic Typography along the bottom */}
         <div className="mt-auto select-none overflow-hidden pb-1" aria-hidden>
-          <motion.p
-            style={{ x: x1 }}
-            className="whitespace-nowrap text-[9vw] font-black leading-none tracking-tighter text-white/10"
+          {/* Each line is rendered twice and the track slides by exactly half its width, then loops,
+              so there is no visible jump. Change `duration` (seconds per loop) to adjust speed. */}
+
+          {/* Line 1: moves left */}
+          <motion.div
+            className="flex w-max"
+            animate={reduceMotion ? undefined : { x: ['0%', '-50%'] }}
+            transition={{ duration: 45, ease: 'linear', repeat: Infinity }}
           >
-            One Vision. Many Gifts. Multiple Functions. One Vision. Many Gifts.
-          </motion.p>
-          <motion.p
-            style={{ x: x2 }}
-            className="text-gradient whitespace-nowrap text-[9vw] font-black leading-none tracking-tighter opacity-80"
+            {[0, 1].map((copy) => (
+              <span
+                key={copy}
+                className="shrink-0 whitespace-nowrap pr-[0.4em] text-[9vw] font-black leading-none tracking-tighter text-white/10"
+              >
+                One Vision. Many Gifts. Multiple Functions.
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Line 2: moves right (opposite direction) */}
+          <motion.div
+            className="flex w-max"
+            animate={reduceMotion ? undefined : { x: ['-50%', '0%'] }}
+            transition={{ duration: 50, ease: 'linear', repeat: Infinity }}
           >
-            One Movement. Limitless Impact. One Movement. Limitless Impact.
-          </motion.p>
+            {[0, 1].map((copy) => (
+              <span
+                key={copy}
+                className="text-gradient shrink-0 whitespace-nowrap pr-[0.4em] text-[9vw] font-black leading-none tracking-tighter opacity-80"
+              >
+                One Movement. Limitless Impact.
+              </span>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>

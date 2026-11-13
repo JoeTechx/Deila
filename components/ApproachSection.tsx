@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { Check, Sparkles } from 'lucide-react'
 import Reveal, { type RevealFrom } from './Reveal'
 
@@ -96,7 +96,7 @@ export default function ApproachSection() {
 
   // Line progress mapped cleanly within the pin
   const line = useTransform(scrollYProgress, [0.06, 0.88], [0, 1])
-  const bgX = useTransform(scrollYProgress, [0, 1], ['0%', '-25%'])
+  const reduceMotion = useReducedMotion()
   const contentOpacity = useTransform(scrollYProgress, [0, 0.05, 0.94, 1], [0.85, 1, 1, 0.85])
 
   return (
@@ -104,19 +104,30 @@ export default function ApproachSection() {
       {/* Sticky viewport container: vertically and horizontally centered with clearance below navbar */}
       <div className="sticky top-0 flex h-[100svh] min-h-[600px] flex-col justify-center items-center overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-10">
         {/* Kinetic ambient background */}
-        <motion.div
-          style={{ x: bgX }}
-          className="pointer-events-none absolute inset-0 flex select-none items-center whitespace-nowrap"
+        <div
+          className="pointer-events-none absolute inset-0 flex select-none items-center overflow-hidden whitespace-nowrap"
           aria-hidden
         >
-          {/* Outlined gold watermark. Raise 0.28 for more visibility, lower it for less. */}
-          <span
-            className="text-[14vw] font-black tracking-tighter"
-            style={{ color: 'rgba(255,255,255,0.03)', WebkitTextStroke: '1.5px rgba(212,175,55,0.28)' }}
+          {/* Self-moving marquee: the text is rendered twice and the track slides left by exactly
+              half its width, then loops, so there is no visible jump. Change `duration` (seconds
+              per loop) to make it faster or slower. */}
+          <motion.div
+            className="flex w-max shrink-0"
+            animate={reduceMotion ? undefined : { x: ['0%', '-50%'] }}
+            transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
           >
-            APPROACH · COMMITMENT · IMPACT · GROWTH · APPROACH · COMMITMENT · IMPACT
-          </span>
-        </motion.div>
+            {[0, 1].map((copy) => (
+              // Outlined gold watermark. Raise 0.28 for more visibility, lower it for less.
+              <span
+                key={copy}
+                className="shrink-0 pr-[0.4em] text-[14vw] font-black tracking-tighter"
+                style={{ color: 'rgba(255,255,255,0.03)', WebkitTextStroke: '1.5px rgba(212,175,55,0.28)' }}
+              >
+                APPROACH · COMMITMENT · IMPACT · GROWTH ·
+              </span>
+            ))}
+          </motion.div>
+        </div>
 
         {/* Centered with justify-between for balanced space in the middle */}
         <motion.div
