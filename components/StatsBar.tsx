@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import Reveal from './Reveal'
 
 const stats = [
@@ -44,18 +44,22 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
 }
 
 export default function StatsBar() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="relative overflow-x-clip py-16 md:py-24">
-      {/* Tilted gold marquee band sweeps in from the left */}
+      {/* Tilted crimson marquee band sweeps in from the left.
+          The text is repeated 4 times and the track slides by exactly one copy (25%),
+          so it never runs short, even on very wide screens. Colors live in .stats-band (globals.css). */}
       <Reveal from="left" distance={400} duration={1.1} amount={0.2}>
-        <div className="-ml-[5%] w-[110%] -rotate-2 overflow-hidden bg-[#D4AF37] py-3 text-black shadow-[0_0_60px_rgba(212,175,55,0.25)] md:py-4">
+        <div className="stats-band -ml-[5%] w-[110%] -rotate-2 overflow-hidden py-3 md:py-4">
           <motion.div
             className="flex w-max whitespace-nowrap"
-            animate={{ x: ['0%', '-50%'] }}
+            animate={reduceMotion ? undefined : { x: ['0%', '-25%'] }}
             transition={{ duration: 28, ease: 'linear', repeat: Infinity }}
           >
-            {[0, 1].map((half) => (
-              <div key={half} className="flex">
+            {[0, 1, 2, 3].map((copy) => (
+              <div key={copy} className="flex">
                 {phrases.map((p) => (
                   <span key={p} className="text-xl font-black uppercase tracking-tight md:text-3xl">
                     <span className="mx-6">{p}</span>
@@ -68,14 +72,23 @@ export default function StatsBar() {
         </div>
       </Reveal>
 
+      {/* One panel holding all four stats. Dividers and colors come from .stats-panel (globals.css),
+          so dark and light mode both work with no extra overrides. */}
       <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-white/10">
+        <div className="stats-panel grid grid-cols-2 overflow-hidden rounded-3xl lg:grid-cols-4">
           {stats.map((stat, i) => (
-            <Reveal key={i} from={i % 2 === 0 ? 'up' : 'zoom'} delay={i * 0.12} amount={0.5} className="px-4 text-center lg:px-8">
+            <Reveal
+              key={i}
+              from={i % 2 === 0 ? 'up' : 'zoom'}
+              delay={i * 0.12}
+              amount={0.5}
+              className="px-4 py-8 text-center lg:px-8 lg:py-12"
+            >
+              <span className="stat-accent mx-auto mb-4 block h-0.5 w-8 rounded-full" />
               <div className="text-gradient mb-2 text-4xl font-black lg:text-6xl">
                 <CountUp value={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-xs uppercase tracking-widest text-white/40">{stat.label}</div>
+              <div className="stat-label text-xs uppercase tracking-widest">{stat.label}</div>
             </Reveal>
           ))}
         </div>

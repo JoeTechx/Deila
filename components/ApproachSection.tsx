@@ -44,33 +44,35 @@ function Step({
   const textX = useTransform(lit, [0, 1], [-24, 0])
   const textClip = useTransform(lit, [0, 1], ['inset(0 100% 0 0)', 'inset(0 0% 0 0)'])
   const ringScale = useTransform(lit, [0, 0.5, 1], [0.85, 1.15, 1])
-  const glow = useTransform(lit, [0, 1], ['0 0 0px rgba(212,175,55,0)', '0 0 16px rgba(212,175,55,0.6)'])
-  const bgOpacity = useTransform(lit, [0, 1], [0, 0.08])
 
   return (
     <motion.div
-      style={{ backgroundColor: useTransform(bgOpacity, (v) => `rgba(212,175,55,${v})`) }}
-      className="relative flex w-full items-center rounded-2xl border border-white/10 bg-white/[0.03] py-2.5 pl-14 pr-4 backdrop-blur-sm transition-all duration-300 hover:border-[#D4AF37]/40 sm:py-3 sm:pl-16 md:py-3.5"
+      className="step-card relative isolate flex w-full items-center rounded-2xl py-2.5 pl-14 pr-4 transition-all duration-300 sm:py-3 sm:pl-16 md:py-3.5"
     >
+      {/* Tint that fades in when the step is checked (an overlay, because framer-motion
+          cannot animate between theme variables) */}
+      <motion.div style={{ opacity: lit }} className="step-lit pointer-events-none absolute inset-0 -z-10 rounded-2xl" />
+
       {/* Node circle on the timeline */}
       <motion.div
-        style={{ scale: ringScale, boxShadow: glow }}
-        className="absolute left-2.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#0d0d0d] sm:left-3.5 sm:h-9 sm:w-9"
+        style={{ scale: ringScale }}
+        className="step-node absolute left-2.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full sm:left-3.5 sm:h-9 sm:w-9"
       >
+        <motion.span style={{ opacity: lit }} className="step-glow absolute inset-0 rounded-full" />
         <motion.span
           style={{ opacity: lit }}
-          className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#F0D060]"
+          className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#8B1A1A] to-[#A82222]"
         />
         <motion.span
-          style={{ opacity: lit }}
-          className="relative text-black"
+          style={{ opacity: lit, color: '#ffffff' }}
+          className="relative"
         >
           <Check size={16} strokeWidth={3} />
         </motion.span>
         {/* Step index shown when not yet checked */}
         <motion.span
           style={{ opacity: useTransform(lit, (v) => 1 - v) }}
-          className="absolute text-[10px] font-semibold text-white/50 sm:text-xs"
+          className="copy-muted absolute text-[10px] font-semibold sm:text-xs"
         >
           {String(i + 1).padStart(2, '0')}
         </motion.span>
@@ -78,7 +80,7 @@ function Step({
 
       <motion.span
         style={{ opacity: textOpacity, x: textX, clipPath: textClip }}
-        className="block text-sm font-medium tracking-tight text-white sm:text-base md:text-sm"
+        className="block text-sm font-medium tracking-tight sm:text-base md:text-sm"
       >
         {text}
       </motion.span>
@@ -117,11 +119,10 @@ export default function ApproachSection() {
             transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
           >
             {[0, 1].map((copy) => (
-              // Outlined gold watermark. Raise 0.28 for more visibility, lower it for less.
+              // Outlined watermark. Colors live in .approach-watermark (globals.css).
               <span
                 key={copy}
-                className="shrink-0 pr-[0.4em] text-[14vw] font-black tracking-tighter"
-                style={{ color: 'rgba(255,255,255,0.03)', WebkitTextStroke: '1.5px rgba(212,175,55,0.28)' }}
+                className="approach-watermark shrink-0 pr-[0.4em] text-[14vw] font-black tracking-tighter"
               >
                 APPROACH · COMMITMENT · IMPACT · GROWTH ·
               </span>
@@ -137,7 +138,7 @@ export default function ApproachSection() {
           {/* Left Column: Heading & Context */}
           <div className="w-full lg:w-[46%] flex flex-col justify-center">
             <Reveal from="down" distance={30}>
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">
+              <div className="copy-muted mb-2 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest">
                 <Sparkles size={13} />
                 Our Approach
               </div>
@@ -151,7 +152,7 @@ export default function ApproachSection() {
                   delay={0.08 + i * 0.09}
                   distance={50}
                   amount={0.2}
-                  className={`mr-[0.25em] inline-block ${h.g ? 'text-gradient' : 'text-white'}`}
+                  className={`mr-[0.25em] inline-block ${h.g ? 'text-gradient' : ''}`}
                 >
                   {h.w}
                 </Reveal>
@@ -159,7 +160,7 @@ export default function ApproachSection() {
             </h2>
 
             <Reveal from="left" delay={0.6} distance={60}>
-              <p className="mb-6 max-w-lg text-sm leading-relaxed text-white/60 sm:text-base md:text-sm">
+              <p className="copy-muted mb-6 max-w-lg text-sm leading-relaxed sm:text-base md:text-sm">
                 At DEILA, we move beyond conventional programming. Our goal is to build a functional institution where
                 knowledge converts into competence, leadership into service, and innovation into measurable impact.
               </p>
@@ -167,15 +168,15 @@ export default function ApproachSection() {
 
             {/* Scroll progress meter */}
             <Reveal from="up" delay={0.75} distance={40}>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm">
-                <div className="mb-2 flex items-center justify-between text-xs uppercase tracking-wider text-white/50">
+              <div className="surface-card rounded-2xl p-4 backdrop-blur-sm">
+                <div className="copy-muted mb-2 flex items-center justify-between text-xs uppercase tracking-wider">
                   <span>Interactive Verification</span>
-                  <span className="text-[#D4AF37]">Scroll down to activate</span>
+                  <span className="accent-text">Scroll down to activate</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div className="progress-track h-1.5 w-full overflow-hidden rounded-full">
                   <motion.div
                     style={{ scaleX: line }}
-                    className="h-full origin-left bg-gradient-to-r from-[#D4AF37] to-[#F0D060]"
+                    className="meter-fill h-full origin-left"
                   />
                 </div>
               </div>
@@ -185,12 +186,12 @@ export default function ApproachSection() {
           {/* Right Column: Sticky Timeline Checklist */}
           <div className="relative w-full lg:w-[48%] flex flex-col justify-center">
             {/* Vertical guideline track */}
-            <div className="absolute bottom-5 left-[23px] top-5 w-[2px] bg-white/10 sm:left-[29px]" />
+            <div className="progress-track absolute bottom-5 left-[23px] top-5 w-[2px] sm:left-[29px]" />
 
             {/* Glowing animated scroll progress line */}
             <motion.div
               style={{ scaleY: line }}
-              className="absolute bottom-5 left-[23px] top-5 w-[2px] origin-top bg-gradient-to-b from-[#F0D060] via-[#D4AF37] to-[#F59E0B] shadow-[0_0_12px_rgba(212,175,55,0.9)] sm:left-[29px]"
+              className="timeline-fill absolute bottom-5 left-[23px] top-5 w-[2px] origin-top sm:left-[29px]"
             />
 
             <div className="space-y-2 sm:space-y-2.5">

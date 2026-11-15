@@ -59,7 +59,7 @@ export default function WebinarsSection() {
         <div className="mb-14 grid gap-8 lg:mb-20 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
             <Reveal from="down" distance={30}>
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 px-3.5 py-1.5 text-xs uppercase tracking-widest text-[#D4AF37]">
+              <div className="chip-badge mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs uppercase tracking-widest">
                 <Video size={13} />
                 Webinars
               </div>
@@ -73,7 +73,7 @@ export default function WebinarsSection() {
               </Reveal>
             </h2>
             <Reveal from="up" delay={0.4}>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-white/60">
+              <p className="copy-muted mt-4 max-w-md text-base leading-relaxed">
                 Since September 2024, DEILA has hosted webinars on leadership, finance, mental health, relationships,
                 technology and nation building.
               </p>
@@ -82,15 +82,15 @@ export default function WebinarsSection() {
 
           <div className="flex gap-3 lg:col-span-5 lg:justify-end">
             <Reveal from="zoom" delay={0.3}>
-              <div className="rounded-2xl border border-white/10 px-6 py-4" style={{ background: 'rgba(10,10,10,0.6)' }}>
+              <div className="theme-card rounded-2xl px-6 py-4">
                 <div className="text-gradient text-4xl font-black">{total}</div>
-                <div className="mt-1 text-xs uppercase tracking-widest text-white/40">Webinars hosted</div>
+                <div className="copy-muted mt-1 text-xs uppercase tracking-widest">Webinars hosted</div>
               </div>
             </Reveal>
             <Reveal from="zoom" delay={0.45}>
-              <div className="rounded-2xl border border-white/10 px-6 py-4" style={{ background: 'rgba(10,10,10,0.6)' }}>
+              <div className="theme-card rounded-2xl px-6 py-4">
                 <div className="text-gradient text-4xl font-black">{years.length}</div>
-                <div className="mt-1 text-xs uppercase tracking-widest text-white/40">Years running</div>
+                <div className="copy-muted mt-1 text-xs uppercase tracking-widest">Years running</div>
               </div>
             </Reveal>
           </div>
@@ -98,11 +98,11 @@ export default function WebinarsSection() {
 
         {/* One block per year */}
         {years.map((y) => (
-          <div key={y.year} className="mb-14 grid gap-6 border-t border-white/10 pt-10 lg:mb-20 lg:grid-cols-12 lg:gap-14">
+          <div key={y.year} className="rule-top mb-14 grid gap-6 pt-10 lg:mb-20 lg:grid-cols-12 lg:gap-14">
             <div className="self-start lg:sticky lg:top-32 lg:col-span-4">
               <Reveal from="zoom" duration={0.9}>
                 <div className="text-gradient text-7xl font-black leading-none tracking-tighter lg:text-9xl">{y.year}</div>
-                <div className="mt-3 text-xs uppercase tracking-widest text-white/40">
+                <div className="copy-muted mt-3 text-xs uppercase tracking-widest">
                   {y.items.length} {y.items.length === 1 ? 'webinar' : 'webinars'}
                 </div>
               </Reveal>
@@ -111,19 +111,19 @@ export default function WebinarsSection() {
             <div className="lg:col-span-8">
               {y.items.map((w, i) => (
                 <Reveal key={w.title} from="right" distance={60} amount={0.4}>
-                  <div className="group flex items-start gap-4 border-b border-white/10 py-5 transition-colors duration-300 hover:border-[#D4AF37]/50 sm:gap-8">
-                    <span className="w-16 shrink-0 pt-1 text-sm font-semibold uppercase tracking-widest text-[#D4AF37] sm:w-24">
+                  <div className="webinar-row group flex items-start gap-4 py-5 transition-colors duration-300 sm:gap-8">
+                    <span className="accent-red-text w-16 shrink-0 pt-1 text-sm font-semibold uppercase tracking-widest sm:w-24">
                       {w.date}
                     </span>
-                    <span className="flex-1 text-lg font-semibold leading-snug text-white/90 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white md:text-2xl">
+                    <span className="flex-1 text-lg font-semibold leading-snug transition-all duration-300 group-hover:translate-x-1 md:text-2xl">
                       {w.title}
                       {w.title === latest && (
-                        <span className="ml-3 inline-block translate-y-[-2px] rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#F0D060]">
+                        <span className="tag-latest ml-3 inline-block translate-y-[-2px] rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest">
                           Latest
                         </span>
                       )}
                     </span>
-                    <span className="hidden text-4xl font-black leading-none text-white/[0.06] sm:block">
+                    <span className="num-ghost hidden text-4xl font-black leading-none sm:block">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                   </div>

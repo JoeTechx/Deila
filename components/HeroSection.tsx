@@ -65,10 +65,9 @@ export default function HeroSection() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             {...a('down', 0)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-[#D4AF37] px-4 py-2 text-[10px] font-medium uppercase tracking-widest text-[#f0d060] sm:whitespace-nowrap sm:rounded-full sm:text-xs"
-            style={{ background: 'rgba(212,175,55,0.05)' }}
+            className="hero-badge inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-[10px] font-medium uppercase tracking-widest sm:whitespace-nowrap sm:rounded-full sm:text-xs"
           >
-            <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[#D4AF37]" />
+            <span className="hero-badge-dot h-1.5 w-1.5 shrink-0 animate-pulse rounded-full" />
             DASAYO Entrepreneurship Innovation Leadership Academy
           </motion.div>
         </div>
@@ -101,8 +100,8 @@ export default function HeroSection() {
               <motion.div {...a('zoom', 6)}>
                 <motion.a
                   href="#join"
-                  className="flex items-center gap-2 rounded-full bg-[#D4AF37] px-7 py-3.5 text-sm font-bold tracking-wide text-black transition-colors duration-300 hover:bg-[#F0D060]"
-                  whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(212,175,55,0.5)' }}
+                  className="flex items-center gap-2 rounded-full bg-[#8B1A1A] px-7 py-3.5 text-sm font-bold tracking-wide text-white transition-colors duration-300 hover:bg-[#A82222]"
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(139,26,26,0.5)' }}
                   whileTap={{ scale: 0.98 }}
                 >
                   Join the Movement <ArrowRight size={16} />
@@ -111,7 +110,7 @@ export default function HeroSection() {
               <motion.div {...a('zoom', 7)}>
                 <motion.a
                   href="#about"
-                  className="flex items-center gap-2 rounded-full border border-white/20 px-7 py-3.5 text-sm font-semibold tracking-wide text-white transition-colors duration-300 hover:border-[#D4AF37]/50 hover:text-[#D4AF37]"
+                  className="btn-ghost flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -132,7 +131,7 @@ export default function HeroSection() {
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
             className="h-8 w-px"
-            style={{ background: 'linear-gradient(to bottom, rgba(212,175,55,0.6), transparent)' }}
+            style={{ background: 'linear-gradient(to bottom, var(--fg-dim), transparent)' }}
           />
           <span>01 / 08</span>
         </motion.div>

@@ -26,9 +26,7 @@ function Word({
   return (
     <motion.span
       style={{ opacity, y }}
-      className={`mr-[0.24em] inline-block drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ${
-        gold ? 'text-gradient font-black' : 'text-white'
-      }`}
+      className={`text-lift mr-[0.24em] inline-block ${gold ? 'text-gradient font-black' : ''}`}
     >
       {children}
     </motion.span>
@@ -52,16 +50,6 @@ export default function VisionMissionSection() {
   const missionProgress = useTransform(scrollYProgress, [0.46, 0.85], [0, 1])
   const missionOpacity = useTransform(missionProgress, [0, 1], [0.65, 1])
   const missionY = useTransform(missionProgress, [0, 1], [15, 0])
-  const missionBorder = useTransform(
-    missionProgress,
-    [0, 1],
-    ['rgba(255,255,255,0.2)', 'rgba(212,175,55,0.65)']
-  )
-  const missionBg = useTransform(
-    missionProgress,
-    [0, 1],
-    ['rgba(15,15,15,0.55)', 'rgba(212,175,55,0.07)']
-  )
 
   // Vision softens slightly when Mission takes the primary spotlight
   const visionDim = useTransform(scrollYProgress, [0.48, 0.68], [1, 0.60])
@@ -91,7 +79,7 @@ export default function VisionMissionSection() {
             {/* NEW: big heading, same style as Philosophy. Sits on the left on desktop, above the cards on small screens. */}
             <div className="lg:col-span-5">
               <Reveal from="down" distance={30}>
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#D4AF37] backdrop-blur-md">
+                <div className="chip-badge mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest backdrop-blur-md">
                   <Compass size={13} />
                   Guiding Principles
                 </div>
@@ -105,7 +93,7 @@ export default function VisionMissionSection() {
                 </Reveal>
               </h2>
               <Reveal from="up" delay={0.4}>
-                <p className="mt-4 max-w-sm text-base leading-relaxed text-white/60">
+                <p className="copy-muted mt-4 max-w-sm text-base leading-relaxed">
                   The destination we are working toward, and the practical commitments that carry us there.
                 </p>
               </Reveal>
@@ -116,8 +104,8 @@ export default function VisionMissionSection() {
               {/* Header tracker */}
               <Reveal from="right" distance={40} amount={0.5}>
                 <div className="mb-4 flex items-center justify-end">
-                  <div className="text-xs uppercase tracking-widest text-white/60">
-                    <span className="text-[#D4AF37]">Sticky View</span> · Scroll to Advance
+                  <div className="copy-muted text-xs uppercase tracking-widest">
+                    <span className="accent-text">Sticky View</span> · Scroll to Advance
                   </div>
                 </div>
               </Reveal>
@@ -126,13 +114,13 @@ export default function VisionMissionSection() {
               <Reveal from="left" delay={0.1} distance={80}>
                 <motion.div
                   style={{ opacity: visionDim }}
-                  className="rounded-3xl border border-white/20 bg-gradient-to-br from-white/[0.09] via-[#0d0d0d]/70 to-black/75 p-6 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.25)] transition-opacity duration-500 sm:p-8"
+                  className="vision-card rounded-3xl p-6 backdrop-blur-2xl transition-opacity duration-500 sm:p-8"
                 >
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+                  <div className="chip-badge mb-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest">
                     <Eye size={15} />
                     01 / Our Vision
                   </div>
-                  <p className="text-2xl font-black leading-[1.2] tracking-tighter text-white sm:text-3xl lg:text-4xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+                  <p className="text-lift text-2xl font-black leading-[1.2] tracking-tighter sm:text-3xl lg:text-4xl">
                     {words.map((w, i) => (
                       <Word
                         key={i}
@@ -150,31 +138,32 @@ export default function VisionMissionSection() {
               {/* Mission Luminous Card with High Contrast Text */}
               <Reveal from="right" delay={0.25} distance={80}>
                 <motion.div
-                  style={{
-                    opacity: missionOpacity,
-                    y: missionY,
-                    borderColor: missionBorder,
-                    backgroundColor: missionBg,
-                  }}
-                  className="mt-5 rounded-3xl border p-6 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.55),inset_0_1px_2px_rgba(255,255,255,0.25)] transition-all duration-300 sm:p-8"
+                  style={{ opacity: missionOpacity, y: missionY }}
+                  className="mission-card relative mt-5 rounded-3xl p-6 backdrop-blur-2xl transition-all duration-300 sm:p-8"
                 >
+                  {/* Fades in as you scroll to the Mission: tinted background + stronger border.
+                      (framer-motion cannot animate between theme variables, so this overlay does it with opacity.) */}
+                  <motion.div
+                    style={{ opacity: missionProgress }}
+                    className="mission-glow pointer-events-none absolute -inset-px -z-10 rounded-3xl"
+                  />
                   <div className="mb-3 flex items-center justify-between">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#F0D060]">
+                    <div className="chip-badge inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest">
                       <Target size={15} />
                       02 / Our Mission
                     </div>
-                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-white/15">
+                    <div className="progress-track h-1.5 w-16 overflow-hidden rounded-full">
                       <motion.div
                         style={{ scaleX: missionProgress }}
-                        className="h-full origin-left bg-gradient-to-r from-[#D4AF37] to-[#F0D060]"
+                        className="progress-fill h-full origin-left"
                       />
                     </div>
                   </div>
-                  <p className="text-base font-medium leading-relaxed text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] sm:text-lg md:text-xl">
+                  <p className="text-lift text-base font-medium leading-relaxed sm:text-lg md:text-xl">
                     To provide accessible learning platforms, practical training, mentorship, networking
                     opportunities, and developmental initiatives that equip individuals with the{' '}
-                    <span className="text-[#F0D060] font-semibold">knowledge, skills, values, and capacity</span> to achieve{' '}
-                    <span className="text-[#F0D060] font-semibold">personal excellence</span>, entrepreneurial success,
+                    <span className="accent-red-text font-semibold">knowledge, skills, values, and capacity</span> to achieve{' '}
+                    <span className="accent-red-text font-semibold">personal excellence</span>, entrepreneurial success,
                     effective leadership, and meaningful societal impact.
                   </p>
                 </motion.div>
@@ -197,7 +186,7 @@ export default function VisionMissionSection() {
             {[0, 1].map((copy) => (
               <span
                 key={copy}
-                className="shrink-0 whitespace-nowrap pr-[0.4em] text-[9vw] font-black leading-none tracking-tighter text-white/10"
+                className="shrink-0 whitespace-nowrap pr-[0.4em] text-[9vw] font-black leading-none tracking-tighter marquee-ghost"
               >
                 One Vision. Many Gifts. Multiple Functions.
               </span>

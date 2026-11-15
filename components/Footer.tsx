@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { XIcon, Mail, ArrowUpRight, ArrowUp, Link2 } from 'lucide-react'
 import Reveal, { type RevealFrom } from './Reveal'
@@ -63,30 +64,40 @@ export default function Footer() {
   return (
     <footer
       ref={ref}
-      className="relative z-10 flex min-h-[100svh] flex-col overflow-hidden border-t border-[#D4AF37]/25 shadow-[0_-40px_120px_rgba(0,0,0,0.95)]"
-      style={{ background: '#0a0a0a' }}
+      className="site-footer relative z-10 flex min-h-[100svh] flex-col overflow-hidden"
     >
-      {/* Gold edge light along the top of the curtain */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F0D060] to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#D4AF37]/[0.08] to-transparent" />
+      {/* Navy edge light along the top of the curtain */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#1B2854]/[0.06] to-transparent" />
 
       <div className="mx-auto w-full max-w-7xl px-6 pt-20">
         <div className="mb-16 grid gap-12 lg:grid-cols-5">
           {/* Brand column: logo zooms in, text slides in from the left, socials pop one by one */}
           <div className="lg:col-span-2">
             <Reveal from="zoom" duration={0.9}>
-              <a href="#home" className="mb-4 inline-block text-3xl font-black tracking-tighter text-white">
-                DE<span className="text-gradient">ILA</span>
+              <a href="#home" className="mb-4 inline-flex items-center gap-2.5">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/20 shadow-md">
+                  <Image
+                    src="/deila-brand-logo.jpg"
+                    alt="DEILA Logo"
+                    fill
+                    sizes="40px"
+                    className="object-cover object-center"
+                  />
+                </div>
+                <span className="text-2xl font-black tracking-tighter">
+                  DE<span className="text-gradient">ILA</span>
+                </span>
               </a>
             </Reveal>
             <Reveal from="left" delay={0.12} distance={60}>
-              <p className="mb-6 max-w-xs text-sm leading-relaxed text-white/40">
+              <p className="copy-muted mb-6 max-w-xs text-sm leading-relaxed">
                 DASAYO Entrepreneurship Innovation Leadership Academy. Developing People. Building Leaders. Inspiring
                 Innovation. Creating Impact.
               </p>
             </Reveal>
             <Reveal from="left" delay={0.24} distance={60}>
-              <p className="text-xs font-medium italic leading-relaxed text-[#D4AF37]/60">
+              <p className="copy-muted text-xs font-medium italic leading-relaxed">
                 &ldquo;One Vision. Many Gifts. Multiple Functions.
                 <br />
                 One Movement. Limitless Impact.&rdquo;
@@ -99,7 +110,7 @@ export default function Footer() {
                     href={href}
                     aria-label={label}
                     whileHover={{ scale: 1.15, y: -3 }}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors duration-300 hover:border-[#D4AF37]/30 hover:text-[#D4AF37]"
+                    className="footer-icon flex h-9 w-9 items-center justify-center rounded-full"
                   >
                     <Icon size={15} />
                   </motion.a>
@@ -112,7 +123,7 @@ export default function Footer() {
           {footerLinks.map((col, ci) => (
             <div key={col.title}>
               <Reveal from="down" delay={ci * 0.15} distance={25}>
-                <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white">{col.title}</h4>
+                <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest">{col.title}</h4>
               </Reveal>
               <ul className="space-y-3">
                 {col.links.map((link, li) => (
@@ -121,7 +132,7 @@ export default function Footer() {
                       <a
                         href={link.href}
                         onClick={link.href === '#join' ? goJoin : undefined}
-                        className="group flex items-center gap-1 text-sm text-white/40 transition-colors duration-300 hover:text-white"
+                        className="footer-link group flex items-center gap-1 text-sm"
                       >
                         <span className="transition-transform duration-300 group-hover:translate-x-1">{link.label}</span>
                         <ArrowUpRight size={12} className="-translate-y-0.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100" />
@@ -135,18 +146,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar: copyright slides from the left, legal links drop in, back-to-top zooms in */}
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row">
+        <div className="footer-rule flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
           <Reveal from="left" distance={50} amount={0.5}>
-            <p className="text-xs text-white/25">
+            <p className="copy-dim text-xs">
               © {new Date().getFullYear()} DEILA — DASAYO Entrepreneurship Innovation Leadership Academy. All rights reserved.
             </p>
           </Reveal>
           <div className="flex items-center gap-6">
             <Reveal from="up" delay={0.1} distance={25} amount={0.5}>
-              <a href="#" className="text-xs text-white/25 transition-colors hover:text-white/50">Privacy Policy</a>
+              <a href="#" className="footer-legal text-xs">Privacy Policy</a>
             </Reveal>
             <Reveal from="up" delay={0.2} distance={25} amount={0.5}>
-              <a href="#" className="text-xs text-white/25 transition-colors hover:text-white/50">Terms of Use</a>
+              <a href="#" className="footer-legal text-xs">Terms of Use</a>
             </Reveal>
             <Reveal from="zoom" delay={0.3} amount={0.5}>
               <motion.button
@@ -154,7 +165,7 @@ export default function Footer() {
                 aria-label="Back to top"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.92 }}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D4AF37]/30 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
+                className="footer-top-btn flex h-10 w-10 items-center justify-center rounded-full"
               >
                 <motion.span animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 1.6 }}>
                   <ArrowUp size={16} />
@@ -168,18 +179,10 @@ export default function Footer() {
       {/* Giant wordmark: rises with your scroll, in both directions */}
       <div className="mt-auto select-none overflow-hidden pt-6" aria-hidden>
         <motion.div
-          style={{
-            y: wordY,
-            backgroundImage:
-              'linear-gradient(110deg, #B8961E 30%, #F0D060 42%, #ffffff 50%, #F0D060 58%, #B8961E 70%)',
-            backgroundSize: '250% 100%',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
+          style={{ y: wordY }}
           animate={{ backgroundPosition: ['150% 0', '-50% 0'] }}
           transition={{ duration: 5, ease: 'linear', repeat: Infinity }}
-          className="text-center text-[27vw] font-black leading-[0.8] tracking-tighter"
+          className="footer-wordmark text-center text-[27vw] font-black leading-[0.8] tracking-tighter"
         >
           DEILA
         </motion.div>
