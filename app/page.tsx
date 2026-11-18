@@ -1,16 +1,17 @@
-import Preloader from '@/components/Preloader'
-import SceneBackground from '@/components/SceneBackground'
+import Preloader from '@/components/homepage/Preloader'
+import SceneBackground from '@/components/homepage/SceneBackground'
 import Navbar from '@/components/Navbar'
-import HeroSection from '@/components/HeroSection'
-import StatsBar from '@/components/StatsBar'
-import AboutSection from '@/components/AboutSection'
-import WhatWeDoSection from '@/components/WhatWeDoSection'
-import VisionMissionSection from '@/components/VisionMissionSection'
-import PhilosophySection from '@/components/PhilosophySection'
-import ApproachSection from '@/components/ApproachSection'
-import JoinSection from '@/components/JoinSection'
+import HeroSection from '@/components/homepage/HeroSection'
+import StatsBar from '@/components/homepage/StatsBar'
+import AboutSection from '@/components/homepage/AboutSection'
+import WhatWeDoSection from '@/components/homepage/WhatWeDoSection'
+import VisionMissionSection from '@/components/homepage/VisionMissionSection'
+import PhilosophySection from '@/components/homepage/PhilosophySection'
+import ApproachSection from '@/components/homepage/ApproachSection'
+import JoinSection from '@/components/homepage/JoinSection'
 import Footer from '@/components/Footer'
-import WebinarsSection from '@/components/webinarsSection'
+import WebinarsSection from '@/components/homepage/webinarsSection'
+import FoundersTeaser from '@/components/homepage/FoundersTeaser'
 
 // Each data-scene wrapper tells the 3D logo which pose to use while that section is on screen.
 // Poses are defined in components/SceneBackground.tsx.
@@ -29,6 +30,7 @@ export default function Home() {
         <div data-scene="philosophy"><PhilosophySection /></div>
         <div data-scene="approach"><ApproachSection /></div>
         <div data-scene="webinars"><WebinarsSection /></div>
+        <div data-scene="founders"><FoundersTeaser /></div>
         {/* Curtain reveal: Join stays pinned while the footer slides up and covers it (and the 3D logo behind) */}
           <div data-scene="join" className="sticky top-0 z-0"><JoinSection /></div>
         <div id="finale" className="relative">

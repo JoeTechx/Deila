@@ -1,7 +1,7 @@
 'use client'
 
-import Reveal from './Reveal'
-import TiltCard from './TiltCard'
+import Reveal from '@/components/Reveal'
+import TiltCard from '@/components/TiltCard'
 
 const tags = ['Webinars', 'Leadership Training', 'Mentorship', 'Networking']
 

@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { XIcon, Mail, ArrowUpRight, ArrowUp, Link2 } from 'lucide-react'
 import Reveal, { type RevealFrom } from './Reveal'
@@ -15,6 +16,7 @@ const footerLinks: { title: string; from: RevealFrom; links: { label: string; hr
       { label: 'Vision & Mission', href: '#vision' },
       { label: 'Our Philosophy', href: '#philosophy' },
       { label: 'Our Approach', href: '#approach' },
+      { label: 'Meet the Founders', href: '/founder' },
     ],
   },
   {
@@ -50,15 +52,24 @@ const socials = [
 /** Signature: the footer is a full-screen curtain that slides up over the pinned Join section (and the 3D logo behind it).
  *  Everything inside appears one by one, from different directions, and replays whenever you scroll in or out. */
 export default function Footer() {
+  const pathname = usePathname()
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] })
   const wordY = useTransform(scrollYProgress, [0.2, 1], ['70%', '0%'])
 
   // The Join section is pinned (sticky) under the footer, so jump to the start of the finale instead.
   const goJoin = (e: React.MouseEvent) => {
+    if (pathname !== '/') return
     e.preventDefault()
     const finale = document.getElementById('finale')
     if (finale) window.scrollTo({ top: finale.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' })
+  }
+
+  const getHref = (href: string) => {
+    if (href.startsWith('#')) {
+      return pathname === '/' ? href : `/${href}`
+    }
+    return href
   }
 
   return (
@@ -75,7 +86,7 @@ export default function Footer() {
           {/* Brand column: logo zooms in, text slides in from the left, socials pop one by one */}
           <div className="lg:col-span-2">
             <Reveal from="zoom" duration={0.9}>
-              <a href="#home" className="mb-4 inline-flex items-center gap-2.5">
+              <a href={pathname === '/' ? '#home' : '/'} className="mb-4 inline-flex items-center gap-2.5">
                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/20 shadow-md">
                   <Image
                     src="/deila-brand-logo.jpg"
@@ -130,8 +141,8 @@ export default function Footer() {
                   <li key={link.label}>
                     <Reveal from={col.from} delay={ci * 0.15 + 0.1 + li * 0.09} distance={40} amount={0.5}>
                       <a
-                        href={link.href}
-                        onClick={link.href === '#join' ? goJoin : undefined}
+                        href={getHref(link.href)}
+                        onClick={pathname === '/' && link.href === '#join' ? goJoin : undefined}
                         className="footer-link group flex items-center gap-1 text-sm"
                       >
                         <span className="transition-transform duration-300 group-hover:translate-x-1">{link.label}</span>

@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { Eye, Target, Compass } from 'lucide-react'
-import Reveal from './Reveal'
+import Reveal from '@/components/Reveal'
 
 const vision =
   'To become a leading institution for entrepreneurship, innovation, leadership development, and human-capacity building — raising individuals and leaders who transform ideas, businesses, communities, and society.'

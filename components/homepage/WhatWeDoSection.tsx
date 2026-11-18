@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { Users, TrendingUp, Lightbulb, BookOpen, Network, Heart, Globe, type LucideIcon } from 'lucide-react'
-import TiltCard from './TiltCard'
-import Reveal from './Reveal'
+import TiltCard from '@/components/TiltCard'
+import Reveal from '@/components/Reveal'
 
 type Area = { icon: LucideIcon; title: string; desc: string; color: string }
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { Brain, Award, Rocket, Puzzle, GitBranch, BarChart3 } from 'lucide-react'
-import Reveal from './Reveal'
+import Reveal from '@/components/Reveal'
 
 const pillars = [
   { icon: Brain,    keyword: 'Knowledge',       produces: 'Competence',        color: 'var(--accent)' },

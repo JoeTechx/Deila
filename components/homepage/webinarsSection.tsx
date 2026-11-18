@@ -1,7 +1,7 @@
 'use client'
 
 import { Video } from 'lucide-react'
-import Reveal from './Reveal'
+import Reveal from '@/components/Reveal'
 
 type Webinar = { date: string; title: string }
 

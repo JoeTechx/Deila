@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { Check, Sparkles } from 'lucide-react'
-import Reveal, { type RevealFrom } from './Reveal'
+import Reveal, { type RevealFrom } from '@/components/Reveal'
 
 const commitments = [
   'Continuous learning and development',
